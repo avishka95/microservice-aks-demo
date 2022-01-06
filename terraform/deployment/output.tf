@@ -26,3 +26,7 @@ output "kube_config" {
 output "host" {
   value = azurerm_kubernetes_cluster.k8s.kube_config.0.host
 }
+
+output "publicIp" {
+  value = azurerm_public_ip.web-service.ip_address
+}

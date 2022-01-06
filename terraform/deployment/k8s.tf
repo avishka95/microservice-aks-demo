@@ -88,3 +88,10 @@ resource "azurerm_container_registry" "acr" {
   sku                 = "Basic"
   admin_enabled       = false
 }
+
+resource "azurerm_public_ip" "web-service" {
+  name                = "publicIpWebService"
+  resource_group_name = azurerm_resource_group.k8s.name
+  location            = azurerm_resource_group.k8s.location
+  allocation_method   = "Static"
+}
