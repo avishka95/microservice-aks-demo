@@ -1,56 +1,217 @@
-Microservice Kubernetes Sample
+
+  
+
+# Microservice Kubernetes Sample
+
+  
+
 =====================
 
-This project creates a complete micro service demo system in Docker
-containers. The services are implemented in Java using Spring and
-Spring Cloud.
+  
+
+This project creates a complete micro service demo system in Docker containers. The services are implemented in Java using Spring and Spring Cloud.
+
+  
 
 This project contains a demo micro-service system that can be deployed on any containerized environment.
-There are three microservices:
-- `Order` to process orders.
-- `Customer` to handle customer data.
-- `Catalog` to handle the items in the catalog.
 
-- `apache` to provide the web page at port 8080
+  
+
+There are three microservices:
+
+  
+
+-  `Order` to process orders.
+
+  
+
+-  `Customer` to handle customer data.
+
+  
+
+-  `Catalog` to handle the items in the catalog.
+
+  
+
+-  `apache` to provide the web page at port 8080
+
+  
+
+  
 
 Apache HTTP is used to provide the web page of the demo at port 8080. It also forwards HTTP requests to the microservices. This
+
+  
+
 is not really necessary as each service has its own port on the host but it provides a single point of entry for the whole system.
+
+  
+
 Apache HTTP is configured as a reverse proxy for this.
 
-###Project Modules
+  
 
-- [microservice-kubernetes-demo-catalog](microservice-kubernetes-demo/microservice-kubernetes-demo-catalog) is the application to take care of items.
-- [microservice-kubernetes-demo-customer](microservice-kubernetes-demo/microservice-kubernetes-demo-customer) is responsible for customers.
-- [microservice-kubernetes-demo-order](microservice-kubernetes-demo/microservice-kubernetes-demo-order) does order processing. It uses
-  microservice-kubernetes-demo-catalog and microservice-kubernetes-demo-customer.
-- [microservice-kubernetes-demo/apache](microservice-kubernetes-demo/apache/) is the apache load balancer
+  
 
-###How to run
----------
-What you need
-An Azure subscription
+### Project Modules
 
-Prerequisites:
-2. Install docker
+  
 
-3. Install helm
+  
 
-4. Install terraform
+-  [microservice-kubernetes-demo-catalog](microservice-kubernetes-demo/microservice-kubernetes-demo-catalog) is the application to take care of items.
 
-1. Login to Azure using Azure CLI
-   az login
-   
-Create a Storage account to save the terraform state
-Create a service principle to 
+  
 
+-  [microservice-kubernetes-demo-customer](microservice-kubernetes-demo/microservice-kubernetes-demo-customer) is responsible for customers.
+
+  
+
+-  [microservice-kubernetes-demo-order](microservice-kubernetes-demo/microservice-kubernetes-demo-order) does order processing. It uses
+
+  
+
+microservice-kubernetes-demo-catalog and microservice-kubernetes-demo-customer.
+
+  
+
+-  [microservice-kubernetes-demo/apache](microservice-kubernetes-demo/apache/) is the apache load balancer
+
+  
+
+  
+
+## How to run
+
+  
+
+Before you start,
+
+  
+
+* Make sure have a valid Azure subscription and have read/write access to it
+
+  
+
+  
+
+* Make sure Docker is installed
+
+  
+
+  
+
+* Make sure kubectl is installed
+
+  
+
+  
+
+* Make sure Helm is installed
+
+  
+
+  
+
+* Make sure Terraform is installed
+
+  
+
+  
+
+* Make sure Azure CLI is installed
+
+  
+
+  
+
+## Prerequisites
+
+  
+
+You need to create an Azure storage account to store the Terraform state by running the following commands
+
+  
+
+`export RESOURCE_GROUP_NAME=tfstate`
+
+  
+
+`export STORAGE_ACCOUNT_NAME=tfstate$RANDOM`
+
+  
+
+`export CONTAINER_NAME=tfstate`
+
+  
+
+  
+
+> Create resource group
+
+  
+
+`az group create --name $RESOURCE_GROUP_NAME --location eastus`
+
+  
+
+  
+
+> Create storage account
+
+  
+
+`az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob`
+
+  
+
+  
+
+> Create blob container
+
+  
+
+`az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME`
+
+  
+
+`ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv) export ARM_ACCESS_KEY=$ACCOUNT_KEY`
+
+  
+
+> Login to Azure using Azure CLI
+
+  
+
+`az login`
+
+  
+  
+
+## Deployment
 
 There are 3 main steps that need to be followed.
 
-####Create Infrastructure
+  
 
+  
 
-####Build Image
+#### Create Infrastructure
 
+Run microservice-aks-demo/terraform/script.sh
 
-####Deploy Helm Chart
+You will be listed with a plan on the resources that will be created, updated or destroyed. Afterwards you will be prompted for a confirmation to provision the resources where you will need to input 'yes' to continue.
 
+Once the script is completed it will create the necessary resources.
+
+  
+
+#### Build Image
+
+Run microservice-aks-demo/microservice-kubernetes-demo/docker-build.sh to build and push the images to the container registry
+
+  
+
+#### Deploy Helm Chart
+
+Run `helm install cw --generate-name -n cw to deploy the microservices`
