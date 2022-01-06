@@ -1,7 +1,11 @@
 
   
 
+  
+
 # Microservice Kubernetes Sample
+
+  
 
   
 
@@ -9,7 +13,11 @@
 
   
 
+  
+
 This project creates a complete micro service demo system in Docker containers. The services are implemented in Java using Spring and Spring Cloud.
+
+  
 
   
 
@@ -17,7 +25,11 @@ This project contains a demo micro-service system that can be deployed on any co
 
   
 
+  
+
 There are three microservices:
+
+  
 
   
 
@@ -25,11 +37,17 @@ There are three microservices:
 
   
 
+  
+
 -  `Customer` to handle customer data.
 
   
 
+  
+
 -  `Catalog` to handle the items in the catalog.
+
+  
 
   
 
@@ -39,7 +57,11 @@ There are three microservices:
 
   
 
+  
+
 Apache HTTP is used to provide the web page of the demo at port 8080. It also forwards HTTP requests to the microservices. This
+
+  
 
   
 
@@ -47,7 +69,11 @@ is not really necessary as each service has its own port on the host but it prov
 
   
 
+  
+
 Apache HTTP is configured as a reverse proxy for this.
+
+  
 
   
 
@@ -59,7 +85,11 @@ Apache HTTP is configured as a reverse proxy for this.
 
   
 
+  
+
 -  [microservice-kubernetes-demo-catalog](microservice-kubernetes-demo/microservice-kubernetes-demo-catalog) is the application to take care of items.
+
+  
 
   
 
@@ -67,11 +97,17 @@ Apache HTTP is configured as a reverse proxy for this.
 
   
 
+  
+
 -  [microservice-kubernetes-demo-order](microservice-kubernetes-demo/microservice-kubernetes-demo-order) does order processing. It uses
 
   
 
+  
+
 microservice-kubernetes-demo-catalog and microservice-kubernetes-demo-customer.
+
+  
 
   
 
@@ -81,7 +117,11 @@ microservice-kubernetes-demo-catalog and microservice-kubernetes-demo-customer.
 
   
 
+  
+
 ## How to run
+
+  
 
   
 
@@ -89,7 +129,11 @@ Before you start,
 
   
 
+  
+
 * Make sure have a valid Azure subscription and have read/write access to it
+
+  
 
   
 
@@ -101,7 +145,11 @@ Before you start,
 
   
 
+  
+
 * Make sure kubectl is installed
+
+  
 
   
 
@@ -113,7 +161,11 @@ Before you start,
 
   
 
+  
+
 * Make sure Terraform is installed
+
+  
 
   
 
@@ -125,7 +177,11 @@ Before you start,
 
   
 
+  
+
 ## Prerequisites
+
+  
 
   
 
@@ -133,11 +189,17 @@ You need to create an Azure storage account to store the Terraform state by runn
 
   
 
+  
+
 `export RESOURCE_GROUP_NAME=tfstate`
 
   
 
+  
+
 `export STORAGE_ACCOUNT_NAME=tfstate$RANDOM`
+
+  
 
   
 
@@ -147,7 +209,11 @@ You need to create an Azure storage account to store the Terraform state by runn
 
   
 
+  
+
 > Create resource group
+
+  
 
   
 
@@ -157,7 +223,11 @@ You need to create an Azure storage account to store the Terraform state by runn
 
   
 
+  
+
 > Create storage account
+
+  
 
   
 
@@ -167,7 +237,11 @@ You need to create an Azure storage account to store the Terraform state by runn
 
   
 
+  
+
 > Create blob container
+
+  
 
   
 
@@ -175,7 +249,11 @@ You need to create an Azure storage account to store the Terraform state by runn
 
   
 
+  
+
 `ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv) export ARM_ACCESS_KEY=$ACCOUNT_KEY`
+
+  
 
   
 
@@ -183,12 +261,17 @@ You need to create an Azure storage account to store the Terraform state by runn
 
   
 
+  
+
 `az login`
 
   
+
   
 
 ## Deployment
+
+  
 
 There are 3 main steps that need to be followed.
 
@@ -196,22 +279,38 @@ There are 3 main steps that need to be followed.
 
   
 
+  
+
 #### Create Infrastructure
+
+  
 
 Run microservice-aks-demo/terraform/script.sh
 
+  
+
 You will be listed with a plan on the resources that will be created, updated or destroyed. Afterwards you will be prompted for a confirmation to provision the resources where you will need to input 'yes' to continue.
 
-Once the script is completed it will create the necessary resources.
+  
+
+Once the script is completed it will create the necessary resources. You will see that the `publicIp` is printed in the terminal. You will have to copy this value and add it in the microservice-aks-demo/helm/cw/templates/apache-service.yaml in the last line as the value for `ip`.
+
+  
 
   
 
 #### Build Image
 
+  
+
 Run microservice-aks-demo/microservice-kubernetes-demo/docker-build.sh to build and push the images to the container registry
 
   
 
+  
+
 #### Deploy Helm Chart
+
+  
 
 Run `helm install cw --generate-name -n cw to deploy the microservices`
