@@ -63,5 +63,6 @@ docker push $ACR/microservice-kubernetes-demo-order
 
 az account set --subscription 748682ec-ab94-4a8a-b556-14d7f372734c
 az aks get-credentials --resource-group azure-k8stest --name k8stest --admin
+kubectl create ns cw
 cd ../helm
 helm install cw --generate-name
