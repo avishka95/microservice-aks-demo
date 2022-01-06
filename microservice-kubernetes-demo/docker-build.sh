@@ -22,7 +22,7 @@ else
   cd microservice-kubernetes/microservice-kubernetes-demo
 fi
 
-./mvnw clean package
+./mvnw clean package -Dmaven.test.skip=true
 
 ACR_ACCOUNT=k8sacrcw1
 ACR=$ACR_ACCOUNT\.azurecr.io
