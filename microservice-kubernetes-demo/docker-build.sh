@@ -61,6 +61,7 @@ echo -e "${BOLD}Push image ${YELLOW} for order ...${DEFAULT}"
 docker tag microservice-kubernetes-demo-order $ACR/microservice-kubernetes-demo-order:latest
 docker push $ACR/microservice-kubernetes-demo-order
 
-#az account set --subscription e09e86bd-72af-4d1d-a108-245297fba268
-#az aks get-credentials --resource-group azure-k8stest --name k8stest --admin
-#kubectl apply -f microservices.yaml
+az account set --subscription 748682ec-ab94-4a8a-b556-14d7f372734c
+az aks get-credentials --resource-group azure-k8stest --name k8stest --admin
+cd ../helm
+helm install cw --generate-name

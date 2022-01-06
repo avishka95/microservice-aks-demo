@@ -60,9 +60,8 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     vm_size    = "Standard_D2_v2"
   }
 
-  service_principal {
-    client_id     = var.client_id
-    client_secret = var.client_secret
+  identity {
+    type = "SystemAssigned"
   }
 
   addon_profile {
@@ -82,10 +81,10 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 }
 
-//resource "azurerm_container_registry" "acr" {
-//  name                = "k8sacrcw1"
-//  resource_group_name = azurerm_resource_group.k8s.name
-//  location            = azurerm_resource_group.k8s.location
-//  sku                 = "Basic"
-//  admin_enabled       = false
-//}
+resource "azurerm_container_registry" "acr" {
+  name                = "k8sacrcw1"
+  resource_group_name = azurerm_resource_group.k8s.name
+  location            = azurerm_resource_group.k8s.location
+  sku                 = "Basic"
+  admin_enabled       = false
+}

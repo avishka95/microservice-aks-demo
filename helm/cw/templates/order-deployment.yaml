@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: order
+  name: order
+  namespace: cw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: order
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: order
+    spec:
+      containers:
+      - image: k8sacrcw1.azurecr.io/microservice-kubernetes-demo-order:latest
+        name: order
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}

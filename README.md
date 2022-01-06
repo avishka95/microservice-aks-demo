@@ -27,12 +27,30 @@ Apache HTTP is configured as a reverse proxy for this.
 
 ###How to run
 ---------
+What you need
+An Azure subscription
 
-## Create Infrastructure
+Prerequisites:
+2. Install docker
+
+3. Install helm
+
+4. Install terraform
+
+1. Login to Azure using Azure CLI
+   az login
+   
+Create a Storage account to save the terraform state
+Create a service principle to 
 
 
-## Build Image
+There are 3 main steps that need to be followed.
+
+####Create Infrastructure
 
 
-##
+####Build Image
+
+
+####Deploy Helm Chart
 
