@@ -61,6 +61,7 @@ echo -e "${BOLD}Push image ${YELLOW} for order ...${DEFAULT}"
 docker tag microservice-kubernetes-demo-order $ACR/microservice-kubernetes-demo-order:latest
 docker push $ACR/microservice-kubernetes-demo-order
 
+echo -e "${BOLD} Deploying the services ...${DEFAULT}"
 az account set --subscription 748682ec-ab94-4a8a-b556-14d7f372734c
 az aks get-credentials --resource-group azure-k8stest --name k8stest --admin
 kubectl create ns cw

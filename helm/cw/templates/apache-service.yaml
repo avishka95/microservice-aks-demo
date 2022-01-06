@@ -15,4 +15,6 @@ spec:
     run: apache
   type: LoadBalancer
 status:
-  loadBalancer: {}
+  loadBalancer:
+    ingress:
+      - ip:
