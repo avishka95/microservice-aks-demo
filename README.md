@@ -264,18 +264,22 @@ Once the script is completed it will create the necessary resources.
 
   
 
-#### Build Image
+#### Build Image & Deploy Microservices
 
   
 
-Run microservice-aks-demo/microservice-kubernetes-demo/docker-build.sh to build and push the images to the container registry
+Run microservice-aks-demo/microservice-kubernetes-demo/docker-build.sh.
 
+This scrupt will perform the following actions.
+- build the images and push it to the container registry.
+- install the hel chart to deploy the microservices
+
+Once the script is executed successfully, login to the kuberenets cluster and list the services in `cw` namespace.
+
+`kubectl get services -n cw`
+
+Copy the apache service's EXTERNAL-IP. To access the web page go to `http://EXTERNAL-IP:80`
   
 
   
 
-#### Deploy Helm Chart
-
-  
-
-Run `helm install cw cw -n cw` to deploy the microservices
