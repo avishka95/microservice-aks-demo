@@ -131,7 +131,7 @@ Before you start,
 
   
 
-* Make sure have a valid Azure subscription and have read/write access to it
+* Make sure you have a valid Azure subscription and have read/write access to it
 
   
 
@@ -179,95 +179,60 @@ Before you start,
 
   
 
-## Prerequisites
+### Prerequisites
 
-  
+######You need to create an Azure storage account to store the Terraform state. Run the following commands to create the storage account.
 
-  
-
-You need to create an Azure storage account to store the Terraform state by running the following commands
-
-  
-
-  
 
 `export RESOURCE_GROUP_NAME=tfstate`
 
-  
-
-  
 
 `export STORAGE_ACCOUNT_NAME=tfstate$RANDOM`
 
-  
-
-  
 
 `export CONTAINER_NAME=tfstate`
 
-  
+`export SUBSCRIPTION_ID=<your Azure subscription ID>`
+###
 
-  
-
-  
-
-> Create resource group
-
-  
-
-  
-
-`az group create --name $RESOURCE_GROUP_NAME --location eastus`
-
-  
-
-  
-
-  
-
-> Create storage account
-
-  
-
-  
-
-`az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob`
-
-  
-
-  
-
-  
-
-> Create blob container
-
-  
-
-  
-
-`az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME`
-
-  
-
-  
-
-`ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv) export ARM_ACCESS_KEY=$ACCOUNT_KEY`
-
-  
-
-  
-
-> Login to Azure using Azure CLI
-
-  
-
-  
+* Login to Azure using Azure CLI
 
 `az login`
 
-  
+* Create resource group
 
-  
+`az group create --name $RESOURCE_GROUP_NAME --location centralus`
+
+* Create storage account
+
+`az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob`
+
+* Create blob container
+
+`az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME`
+
+`ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)`
+
+`export ARM_ACCESS_KEY=$ACCOUNT_KEY`
+
+
+###
+######You need to create an Azure service principal to authenticate the kuberenetes cluster to pull images from container registry. Run the following commands.
+
+* Create a Service principal
+
+`az ad app create --display-name AKSClusterServicePrincipal`
+
+Note the <b>appId</b> in the output.
+
+`az ad app credential reset --id <appId> --append`
+
+Note the <b>password</b> in the output
+
+`export TF_VAR_client_id=<appId>`
+
+`export TF_VAR_client_secret=<password>`
+
 
 ## Deployment
 
@@ -281,7 +246,7 @@ There are 3 main steps that need to be followed.
 
   
 
-#### Create Infrastructure
+#### Provision infrastructure resources
 
   
 
@@ -313,4 +278,4 @@ Run microservice-aks-demo/microservice-kubernetes-demo/docker-build.sh to build 
 
   
 
-Run `helm install cw --generate-name -n cw to deploy the microservices`
+Run `helm install cw cw -n cw` to deploy the microservices

@@ -1,27 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     run: apache
-  name: apache
-  namespace: cw
+  name: {{ .Values.apache.deployment.name }}
+  namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.apache.deployment.replicasCount }}
   selector:
     matchLabels:
       run: apache
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         run: apache
     spec:
       containers:
-      - image: k8sacrcw1.azurecr.io/microservice-kubernetes-demo-apache:latest
-        name: apache
-        ports:
-        - containerPort: 80
-        resources: {}
-status: {}
+        - image: {{ .Values.apache.deployment.image }}:{{ .Values.apache.deployment.tag }}
+          name: apache
+          ports:
+            - containerPort: 80
+          resources: {}

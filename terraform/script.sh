@@ -19,14 +19,10 @@ command -v az >/dev/null 2>&1 || {
 }
 
 # Reading values related to azurerm backend for terraform
-backend_storage_account_name="cwtfstate2123"
-backend_container_name="tfstate"
+backend_storage_account_name=$STORAGE_ACCOUNT_NAME
+backend_container_name=$CONTAINER_NAME
 key="cw.terraform.tfstate"
-backend_key="wDnJ/Cj9j8Lz2ejXaMsRVhBd+gIs+oG8gGpdmJ0MLlVH9MgW1+BVh/3brKhyL9J0+Cg3Ehl0CC5KUyP5ZWwwjQ=="
-
-export ARM_ACCESS_KEY=${backend_key}
-export TF_VAR_client_id=77171345-c4ac-4430-910d-643ba8492edc
-export TF_VAR_client_secret=r817Q~IhnfDto.f_fe4gNUV6xLsdyF~Qk_o1R
+backend_key=$ACCOUNT_KEY
 
 # Go to directory where Terraform deployment is
 cd deployment

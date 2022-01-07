@@ -60,8 +60,9 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     vm_size    = "Standard_D2_v2"
   }
 
-  identity {
-    type = "SystemAssigned"
+  service_principal {
+    client_id     = var.client_id
+    client_secret = var.client_secret
   }
 
   addon_profile {
@@ -74,10 +75,6 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   network_profile {
     load_balancer_sku = "Standard"
     network_plugin    = "kubenet"
-  }
-
-  tags = {
-    Environment = "Development"
   }
 }
 

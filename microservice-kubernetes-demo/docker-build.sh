@@ -62,8 +62,8 @@ docker tag microservice-kubernetes-demo-order $ACR/microservice-kubernetes-demo-
 docker push $ACR/microservice-kubernetes-demo-order
 
 echo -e "${BOLD} Deploying the services ...${DEFAULT}"
-az account set --subscription 748682ec-ab94-4a8a-b556-14d7f372734c
+az account set --subscription $SUBSCRIPTION_ID
 az aks get-credentials --resource-group azure-k8stest --name k8stest --admin
 kubectl create ns cw
 cd ../helm
-helm install cw --generate-name
+helm install cw cw -n cw
