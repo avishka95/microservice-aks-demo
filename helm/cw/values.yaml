@@ -12,7 +12,6 @@ apache:
     tag: latest
   service:
     type: LoadBalancer
-    loadbalancerip:
 
 
 catalog:
