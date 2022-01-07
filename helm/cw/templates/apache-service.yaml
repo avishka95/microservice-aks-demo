@@ -13,7 +13,3 @@ spec:
   selector:
     run: apache
   type: {{ .Values.apache.service.type }}
-status:
-  loadBalancer:
-    ingress:
-      - ip: {{ .Values.apache.service.loadbalancerip }}

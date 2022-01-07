@@ -258,7 +258,7 @@ You will be listed with a plan on the resources that will be created, updated or
 
   
 
-Once the script is completed it will create the necessary resources. You will see that the `publicIp` is printed in the terminal. You will have to copy this value and add it in the microservice-aks-demo/helm/cw/templates/apache-service.yaml in the last line as the value for `ip`.
+Once the script is completed it will create the necessary resources.
 
   
 
